@@ -1,13 +1,25 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const mysql = require('mysql');
 
-const db = require('../config/db');
-
-console.log(db.user, db.password);
-
+const router = express.Router();
+const connectionPool = require('../database/connection-pool');
 
 //  GET users listing.
 router.get('/', function(req, res, next) {
+
+    const book = {
+      'author' : 'Emily Bronte',
+      'title' : 'Wuthering Heights',
+      'published' : '1847-01-01'
+    }
+
+    connectionPool.getPool().query('insert into books set ?', book, (err, result) => {
+      if(err) throw err;
+
+      console.log(result);
+    })
+  ;
+
   res.send('books here');
 });
 
